@@ -3,13 +3,14 @@ import { Input } from "@chakra-ui/react"
 
 interface propsInput { 
     placeholder: string,
+    type?: string,
 }
 
-const MainInput: React.FC<propsInput> = ({placeholder}) => {
+const MainInput: React.FC<propsInput> = ({placeholder, type}) => {
     
     return (
         <div>
-            <Input type="tel" placeholder={placeholder} variant="filled"/>
+            <Input color='gray.500' type={type} placeholder={placeholder} variant="filled"/>
         </div>
     )
 }

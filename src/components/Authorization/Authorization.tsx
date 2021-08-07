@@ -1,10 +1,15 @@
 import React, {useState} from 'react'
 import { Avatar, Box, Flex, Stack } from "@chakra-ui/react"
-import MainInput from '../Inputs/MainInput'
+import MainInput from '../Inputs'
+import MainButton from '../Buttons'
+import MainCheckbox from '../CheckBox'
+
 
 
 const Authorization:React.FC = ({}) => {
     const [tab, setTab] = useState<number>(1)
+    const [visiblePass, setVisiblePass] = useState<boolean>(false)
+    
     return (
         <div>
             <Flex w='100%' h='100vh' align='center' justify='center'>
@@ -41,8 +46,10 @@ const Authorization:React.FC = ({}) => {
                         {tab === 1 && 
                             <>
                             <Stack spacing={5}>
-                                <MainInput placeholder={'Введите ваш логин'}/>
-                                <MainInput placeholder={'Введите ваш пароль'}/>
+                                <MainInput type='email' placeholder={'Введите ваш логин'}/>
+                                <MainInput type={`${visiblePass ? 'text' : 'password'}`} placeholder={'Введите ваш пароль'}/>
+                                <MainCheckbox visible={visiblePass} onChangeStatus={setVisiblePass} text='Показать пароль'/>
+                                <MainButton width='calc(100% / 2)' bg='gray.100' color='gray.600' justify={true} text='Войти'/>
                             </Stack>
                             </>
                         }
