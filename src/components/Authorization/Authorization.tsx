@@ -7,27 +7,44 @@ import MainInput from '../Inputs'
 const Authorization:React.FC = ({}) => {
     const [tab, setTab] = useState<number>(1)
     const [visiblePass, setVisiblePass] = useState<boolean>(false)
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [passwordDirty, setPasswordDirty] = useState<boolean>(false)
-    const [passwordError, setpasswordError] = useState('Поле не может быть пустым!')
     const [errors, setErrors] = useState(false)
+    const [errorMessage, seterrorMessage] = useState('Упс, что-то пошло не так')
 
     const blurHandler = (e: React.SyntheticEvent<HTMLInputElement>) => {
         if(!e.currentTarget.value.length) {
-            e.currentTarget.name === 'password' && setPasswordDirty(true)
-            setErrors(true)
+            e.currentTarget.name === 'password' && setErrors(true)
+            seterrorMessage('Поле не может быть пустым')
         } else {
-            setPasswordDirty(false)
             setErrors(false)
         }
+        if(!e.currentTarget.value.length) {
+            e.currentTarget.name === 'email' &&  setErrors(true)
+            seterrorMessage('Поле не может быть пустым')
+        }
+        else {
+            setErrors(false)
+        }
+    }
+    const emailHendler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.currentTarget.value)
+        const re = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        if(!re.test(String(e.currentTarget.value).toLocaleUpperCase())) {
+            seterrorMessage('Некоректный email')
+            setErrors(true)
+        } else {
+            setErrors(false)
+        }
+
     }
     const passwordHendler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.currentTarget.value)
         if(e.currentTarget.value.length < 3 || e.currentTarget.value.length > 8) {
-            setpasswordError('Пароль не может быть меньше 3 или больше 8 символов')
+            seterrorMessage('Пароль не может быть меньше 3 или больше 8 символов')
             setErrors(true)
             if(!e.currentTarget.value) {
-                setpasswordError('Поле не может быть пустым!')
+                seterrorMessage('Поле не может быть пустым!')
             } 
         } else {
             setErrors(false)
@@ -41,7 +58,7 @@ const Authorization:React.FC = ({}) => {
                     
                     <Box position='absolute' color='black' top='-85px' left='0' w='100%' h='50px' borderRadius='2xl' bg='gray.100' p='10px' transition='all 0.3s ease' opacity={`${errors ? '1' : '0'}`}>
                     <Flex justifyContent='center' alignItems='center' w='100%' h='100%'>
-                        <Text fontWeight='semibold' color='red.500'> {passwordDirty ? passwordError : passwordError} </Text>
+                        <Text fontWeight='semibold' color='red.500'> {errorMessage} </Text>
                     </Flex>
                     </Box>
                     
@@ -78,8 +95,8 @@ const Authorization:React.FC = ({}) => {
                             <>
                             <form>
                             <Stack spacing={5} position='relative'>
-                                <MainInput type='email' placeholder={'Введите ваш логин'} />
-                                <MainInput onChange={passwordHendler} onBlur={blurHandler} type={`${visiblePass ? 'text' : 'password'}`} placeholder={'Введите ваш пароль'}/>
+                                <MainInput value={email} onChange={emailHendler} onBlur={blurHandler} type='email' placeholder={'Введите ваш логин'} />
+                                <MainInput value={password} onChange={passwordHendler} onBlur={blurHandler} type={`${visiblePass ? 'text' : 'password'}`} placeholder={'Введите ваш пароль'}/>
                                 <Checkbox onChange={() => setVisiblePass(!visiblePass)}>Показать пароль</Checkbox>
                                 <Flex justifyContent='center'>  
                                     <Button width='calc(100% / 2)' bg='gray.100' color='gray.600' variant="outline">Войти</Button> 
