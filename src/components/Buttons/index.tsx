@@ -15,9 +15,9 @@ const MainButton: React.FC<propsButton> = ({text, justify, width, height, bg, co
     return (
         justify ? 
         <Flex justifyContent='center'>  
-            <Button width={width} colorScheme="Gray" bg={bg}  color={color} variant="outline">{text}</Button> 
+            <Button type='submit' width={width} colorScheme="Gray" bg={bg}  color={color} variant="outline">{text}</Button> 
         </Flex> :
-        <Button width={width} colorScheme="Gray" bg={bg} color={color} variant="outline">{text}</Button>
+        <Button  type='submit' width={width} colorScheme="Gray" bg={bg} color={color} variant="outline">{text}</Button>
     )
 }
 

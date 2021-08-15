@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { Avatar, Box, Flex, Stack, Checkbox, Button, Link, Switch, Text } from "@chakra-ui/react"
 import MainInput from '../Inputs'
+import { useEffect } from 'react'
 
 
 
@@ -12,21 +13,12 @@ const Authorization:React.FC = ({}) => {
     const [errors, setErrors] = useState(false)
     const [errorMessage, seterrorMessage] = useState('Упс, что-то пошло не так')
 
-    const blurHandler = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        if(!e.currentTarget.value.length) {
-            e.currentTarget.name === 'password' && setErrors(true)
-            seterrorMessage('Поле не может быть пустым')
-        } else {
-            setErrors(false)
-        }
-        if(!e.currentTarget.value.length) {
-            e.currentTarget.name === 'email' &&  setErrors(true)
-            seterrorMessage('Поле не может быть пустым')
-        }
-        else {
-            setErrors(false)
-        }
-    }
+
+    useEffect(()=> {
+        setErrors(false)
+        setVisiblePass(false)
+    }, [tab])
+
     const emailHendler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.currentTarget.value)
         const re = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
@@ -49,6 +41,10 @@ const Authorization:React.FC = ({}) => {
         } else {
             setErrors(false)
         }
+    }
+
+    const handlerOnSubmit = () => {
+
     }
     
     return (
@@ -93,10 +89,10 @@ const Authorization:React.FC = ({}) => {
                     <Box w='100%'  marginTop='20px' >
                         {tab === 1 && 
                             <>
-                            <form>
+                            <form onSubmit={e => console.log(e)}>
                             <Stack spacing={5} position='relative'>
-                                <MainInput value={email} onChange={emailHendler} onBlur={blurHandler} type='email' placeholder={'Введите ваш логин'} />
-                                <MainInput value={password} onChange={passwordHendler} onBlur={blurHandler} type={`${visiblePass ? 'text' : 'password'}`} placeholder={'Введите ваш пароль'}/>
+                                <MainInput value={email} onChange={emailHendler}  type='email' placeholder={'Введите ваш логин'} />
+                                <MainInput value={password} onChange={passwordHendler}  type={`${visiblePass ? 'text' : 'password'}`} placeholder={'Введите ваш пароль'}/>
                                 <Checkbox onChange={() => setVisiblePass(!visiblePass)}>Показать пароль</Checkbox>
                                 <Flex justifyContent='center'>  
                                     <Button width='calc(100% / 2)' bg='gray.100' color='gray.600' variant="outline">Войти</Button> 
@@ -105,7 +101,20 @@ const Authorization:React.FC = ({}) => {
                             </form>
                             </>
                         }
-                        {tab === 2 && '2'}
+                        {tab === 2 && 
+                            <form>
+                                <Stack spacing={5}>
+                                    <MainInput placeholder='Введите ваш email:'/>
+                                    <MainInput placeholder='Ваш логин:' />
+                                    <MainInput type={`${visiblePass ? 'text' : 'password'}`} placeholder='Введите ваш пароль:'/>
+                                    <MainInput type={`${visiblePass ? 'text' : 'password'}`} placeholder='Повторите ваш пароль:' />
+                                    <Checkbox onChange={() => setVisiblePass(!visiblePass)}>Показать пароль</Checkbox>
+                                    <Flex justifyContent='center'>  
+                                        <Button width='calc(100% / 2)' bg='gray.100' color='gray.600' variant="outline">Регистрация</Button> 
+                                    </Flex>
+                                </Stack>
+                            </form>
+                        }
                         <Flex w='calc(100% - 20px)' position='absolute' left='0' bottom='10' justifyContent='space-around'>
                                 <Link to='/123'>Забыли пароль?</Link>
                                 <Link>Техническая поддержка</Link>

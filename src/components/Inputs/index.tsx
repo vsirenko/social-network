@@ -6,20 +6,25 @@ interface propsInput {
     type?: string,
     value?: string,
     onBlur?: (e: React.SyntheticEvent<HTMLInputElement>) => void,
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
-const MainInput: React.FC<propsInput> = ({placeholder, type, value, onBlur, onChange}) => {
+const MainInput: React.FC<propsInput> = ({placeholder, type, value, onBlur, onChange, onKeyPress}) => {
+  
+    
     return (
         <div>
             <Input
             value={value}
             onBlur={e => onBlur && onBlur(e)}
             onChange={e => onChange && onChange(e)}
+            onKeyPress={e => onKeyPress && onKeyPress(e)}
             name={type} color='gray.500' 
             type={type} 
             placeholder={placeholder} 
-            variant="filled"/>
+            variant="filled"
+            />
         </div>
     )
 }
